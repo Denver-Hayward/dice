@@ -11,6 +11,7 @@ on:
 jobs:
   Deploy:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'Deploy gh page')"
     steps:          
       - uses: actions/checkout@v3   
       - name: Setup Node.js
@@ -45,3 +46,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          # Optional. Commit message for the created commit.
+          # Defaults to "Apply automatic changes"
+          commit_message: Deploy gh page
