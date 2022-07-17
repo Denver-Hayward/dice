@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Dice from 'react-dice-roll';
 import { useState, useEffect } from 'react';
