@@ -52,7 +52,7 @@ jobs:
         run: pwd
 
       - name: List dir
-        run: ls
+        run: ls /home/runner/work/dice/dice/build/
 
       - if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
         name: Deploy main
