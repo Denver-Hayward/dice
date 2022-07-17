@@ -19,7 +19,6 @@ jobs:
         with:
           bevOverwrite: true
           TARGET_DIR: |
-            main:
             develop:develop
           
       - uses: actions/checkout@v3   
