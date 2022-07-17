@@ -48,6 +48,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Set url
+        run: ls
+
       - if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
         name: Deploy main
         uses: peaceiris/actions-gh-pages@v3
