@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-      - develop
   pull_request:
     branches:
       - main
-      - develop
 
 jobs:
   Deploy:
@@ -44,27 +42,7 @@ jobs:
 
       - name: Set url
         run: PUBLIC_URL=dice
+        run: BUILD_PATH='./docs'
 
       - name: Build
         run: npm run build
-
-      - name: get CWD
-        run: pwd
-
-      - name: List dir
-        run: ls /home/runner/work/dice/dice/build/
-
-      - if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
-        name: Deploy main
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-
-      - if: github.ref == 'refs/heads/develop' || github.event.pull_request.base.ref == 'develop'
-        name: Deploy develop
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          destination_dir: develop
