@@ -48,7 +48,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Set url
+      - name: get CWD
+        run: pwd
+
+      - name: List dir
         run: ls
 
       - if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
