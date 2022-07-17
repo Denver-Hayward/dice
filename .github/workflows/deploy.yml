@@ -21,6 +21,7 @@ jobs:
           bevSetEmptyVars: true
           TARGET_DIR: |
             develop:develop
+            main:.
           
       - uses: actions/checkout@v3   
       - name: Setup Node.js
