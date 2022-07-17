@@ -43,12 +43,8 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Move build to docs
-        run: mv build docs
-
-      - uses: stefanzweifel/git-auto-commit-action@v4
+        
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          # Optional. Commit message for the created commit.
-          # Defaults to "Apply automatic changes"
-          commit_message: Deploy gh page
+          folder: build
