@@ -41,8 +41,7 @@ jobs:
         run: npm ci
 
       - name: Set url
-        run: PUBLIC_URL=dice
-        run: BUILD_PATH='./docs'
+        run: PUBLIC_URL=dice && BUILD_PATH='./docs'
 
       - name: Build
         run: npm run build
