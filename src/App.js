@@ -17,21 +17,25 @@ const expectedRatios = {
 }
 
 function App() {
-  let [dice1, setDice1] = useState(1);
-  let [dice2, setDice2] = useState(2);
+  let [dice1, setDice1] = useState(0);
+  let [dice2, setDice2] = useState(0);
+  const [timer, setTimer] = useState(null);
 
-  const [valueCounts, setValueCounts] = useState({
-    2: 1,
-    3: 2,
-    4: 3,
-    5: 4,
-    6: 5,
-    7: 6,
-    8: 5,
-    9: 4,
-    10: 3,
-    11: 2,
-    12: 1
+  const [{valueCounts, newValue}, setValueCounts] = useState({
+    valueCounts: {
+      2: 1,
+      3: 2,
+      4: 3,
+      5: 4,
+      6: 5,
+      7: 6,
+      8: 5,
+      9: 4,
+      10: 3,
+      11: 2,
+      12: 1
+    },
+    newValue: 0
   });
 
   let dice1Target = 1;
@@ -44,7 +48,7 @@ function App() {
   let ratioTotal = 0;
   
   for (let [number, count] of Object.entries(valueCounts)) {
-    ratioTotal += 10 * Math.pow(expectedRatios[number] / (count / total), 6);
+    ratioTotal += 10 * Math.pow(expectedRatios[number] / (count / total), 10);
     ratios[number] = ratioTotal;
   }
 
@@ -71,18 +75,39 @@ function App() {
   dice2Target = result - dice1Target;
 
   useEffect(() => {
-    if (dice1 !== 0 && dice2 !== 0) {
-      valueCounts[(dice1 + dice2).toString()] = valueCounts[(dice1 + dice2).toString()] + 1;
-      setValueCounts(valueCounts);
-      console.log("saved result");
-      setDice1(0);
-      setDice2(0);
+    const _timer = setTimeout(() => {
+      setValueCounts(({valueCounts, newValue}) => {
+        return {valueCounts, newValue: dice1 + dice2};
+      });
+    }, 2500);
+    
+    setTimer(oldTimer => {  
+      if (oldTimer != null) {
+        clearTimeout(oldTimer);
+      }
+      return _timer;
+    });
+
+    return () => clearTimeout(_timer);
+  }, [ dice1, dice2 ])
+
+  useEffect(() => {
+    if (newValue !== 0) {
+      setValueCounts(({valueCounts}) => {
+        valueCounts[newValue.toString()] = valueCounts[newValue.toString()] + 0.5;
+        return {valueCounts, newValue: 0};
+      });
     }
-  }, [ dice1, dice2, valueCounts ])
+  }, [newValue]);
 
   return (
     <div className="App">
       <div style={{display: 'flex', flexDirection: 'row', padding: '12em'}}>
+        <div>
+          {
+            Object.entries(valueCounts).map(([number, count]) => <div>{number}: {count}</div>)
+          }
+        </div>
         <div style={{flex: 1}}>
           <Dice onRoll={(value) => setDice1(value)} defaultValue={dice1} cheatValue={dice1Target} triggers={['Enter']}/>
         </div>
